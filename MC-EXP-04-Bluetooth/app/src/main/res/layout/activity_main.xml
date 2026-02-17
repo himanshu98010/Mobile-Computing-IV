@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnONOFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ON/OFF" />
+
+    <Button
+        android:id="@+id/btnDiscoverable_on_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Discoverable"
+        android:onClick="btnEnableDisable_Discoverable"
+        android:layout_toEndOf="@id/btnONOFF"
+        android:layout_marginStart="10dp"/>
+
+    <Button
+        android:id="@+id/btnFindUnpairedDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Discover Devices"
+        android:onClick="btnDiscover"
+        android:layout_below="@id/btnONOFF"
+        android:layout_marginTop="10dp"/>
+
+    <ListView
+        android:id="@+id/lvNewDevices"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/btnFindUnpairedDevices"
+        android:layout_marginTop="10dp"
+        android:background="#EFEFEF"/>
+
+    <Button
+        android:id="@+id/btnStartConnection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lvNewDevices"
+        android:text="Start Connection (Must Pair First)"/>
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type message here..."
+        android:layout_below="@+id/btnStartConnection"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SEND"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>
