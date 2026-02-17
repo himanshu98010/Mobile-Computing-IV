@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="EMI Calculator"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:layout_marginBottom="20dp"/>
+
+        <EditText
+            android:id="@+id/principal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Principal Amount (P)"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/interest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Interest Rate (%)"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/years"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Years (N)"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/btn_calculate2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calculate EMI"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monthly EMI:"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"/>
+
+        <EditText
+            android:id="@+id/emi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="0.0"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Interest Payable:"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"/>
+
+        <EditText
+            android:id="@+id/interest_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="0.0"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+</ScrollView>
