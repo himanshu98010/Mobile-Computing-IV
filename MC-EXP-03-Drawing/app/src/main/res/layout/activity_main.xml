@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <co.martinbaciga.drawingtest.ui.component.DrawingView
+        android:id="@+id/draw_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar" />
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#EEEEEE"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_stroke"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brush" />
+
+        <Button
+            android:id="@+id/btn_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color" />
+
+        <Button
+            android:id="@+id/btn_undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Undo" />
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save" />
+    </LinearLayout>
+
+</RelativeLayout>

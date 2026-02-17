@@ -1,0 +1,137 @@
+import math
+from math import *
+from tkinter import *
+from tkinter import simpledialog, messagebox
+
+# Global variables to store user input
+I_VAL = 0
+J_VAL = 0
+
+class Hexagon(object):
+    def __init__(self, parent, x, y, length, color, tags):
+        self.parent = parent
+        self.x = x
+        self.y = y
+        self.length = length
+        self.color = color
+        self.tags = tags
+        self.draw_hex()
+
+    def draw_hex(self):
+        start_x = self.x
+        start_y = self.y
+        angle = 60
+        coords = []
+        for i in range(6):
+            end_x = start_x + self.length * cos(radians(angle * i))
+            end_y = start_y + self.length * sin(radians(angle * i))
+            coords.append([start_x, start_y])
+            start_x = end_x
+            start_y = end_y
+        self.parent.create_polygon(coords, fill=self.color, outline="black", tags=self.tags)
+
+class FrequencyReuse(Tk):
+    CANVAS_WIDTH = 800
+    CANVAS_HEIGHT = 650
+
+    def __init__(self, cluster_size, columns=16, rows=10, edge_len=30):
+        Tk.__init__(self)
+        self.edge_len = edge_len
+        self.cluster_size = cluster_size
+        self.reuse_list = []
+        self.curr_count = 0
+        self.hexagons = []
+        self.co_cell_endp = []
+        self.first_click = True
+        
+        self.canvas = Canvas(self, width=self.CANVAS_WIDTH, height=self.CANVAS_HEIGHT, bg="#4dd0e1")
+        self.canvas.bind("<Button-1>", self.call_back)
+        self.canvas.pack()
+        self.title(f"Frequency Reuse (N={cluster_size})")
+        
+        self.create_grid(columns, rows)
+        self.cluster_reuse_calc()
+        
+        # Instructions Label
+        self.lbl_instruction = Label(self, text="Click a CENTER hexagon to start", font=("Arial", 12, "bold"), bg="white")
+        self.lbl_instruction.place(x=200, y=610)
+
+    def create_grid(self, cols, rows):
+        for c in range(cols):
+            offset = 0 if c % 2 == 0 else self.edge_len * sqrt(3) / 2
+            for r in range(rows):
+                x = c * (self.edge_len * 1.5) + 50
+                y = (r * (self.edge_len * sqrt(3))) + offset + 30
+                hx = Hexagon(self.canvas, x, y, self.edge_len, "#fafafa", f"{r},{c}")
+                self.hexagons.append(hx)
+
+    def cluster_reuse_calc(self):
+        self.hex_radius = sqrt(3) / 2 * self.edge_len
+        self.center_dist = sqrt(3) * self.hex_radius
+
+    def call_back(self, evt):
+        # Find which hexagon was clicked
+        try:
+            item_id = self.canvas.find_closest(evt.x, evt.y)[0]
+            hexagon = self.hexagons[int(item_id) - 1]
+        except:
+            return
+
+        # First click: Select the main cell and calculate neighbors
+        if self.first_click:
+            self.first_click = False
+            self.canvas.itemconfigure(hexagon.tags, fill="orange") # Highlight Center
+            self.lbl_instruction.config(text="Now click the neighboring Co-Channel cells (Green)")
+            
+            start_x, start_y = hexagon.x, hexagon.y
+            self.co_cell_endp.append((start_x, start_y))
+
+            # Logic to find 6 neighbors based on i and j
+            angle_deg = 330
+            for _ in range(6):
+                # Move 'i' steps
+                cx = start_x + (self.center_dist * I_VAL) * cos(radians(angle_deg))
+                cy = start_y + (self.center_dist * I_VAL) * sin(radians(angle_deg))
+                
+                # Move 'j' steps (60 degrees shifted)
+                dest_x = cx + (self.center_dist * J_VAL) * cos(radians(angle_deg - 60))
+                dest_y = cy + (self.center_dist * J_VAL) * sin(radians(angle_deg - 60))
+
+                # Identify the hexagon at this location
+                try:
+                    neighbor_id = self.canvas.find_closest(dest_x, dest_y)[0]
+                    self.reuse_list.append(neighbor_id)
+                except:
+                    pass # Neighbor might be off-screen
+                
+                angle_deg -= 60
+        
+        # Subsequent clicks: Check if user clicked a valid neighbor
+        else:
+            clicked_id = self.canvas.find_closest(evt.x, evt.y)[0]
+            if clicked_id in self.reuse_list:
+                self.canvas.itemconfigure(hexagon.tags, fill="green") # Correct
+                self.curr_count += 1
+                self.lbl_instruction.config(text=f"Correct! Found {self.curr_count} co-cells.")
+            elif clicked_id != self.canvas.find_closest(self.co_cell_endp[0][0], self.co_cell_endp[0][1])[0]:
+                self.canvas.itemconfigure(hexagon.tags, fill="red") # Incorrect
+                self.lbl_instruction.config(text="Wrong cell! Try again.")
+
+if __name__ == '__main__':
+    root = Tk()
+    root.withdraw() # Hide small root window
+    
+    # Input Dialog
+    try:
+        i_input = simpledialog.askinteger("Input", "Enter value for i (e.g., 2):", parent=root, minvalue=0)
+        j_input = simpledialog.askinteger("Input", "Enter value for j (e.g., 1):", parent=root, minvalue=0)
+        
+        if i_input is not None and j_input is not None:
+            I_VAL = i_input
+            J_VAL = j_input
+            N = (I_VAL**2 + I_VAL * J_VAL + J_VAL**2)
+            
+            app = FrequencyReuse(cluster_size=N)
+            app.mainloop()
+    except Exception as e:
+        print("Error:", e)
